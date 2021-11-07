@@ -48,7 +48,7 @@ Independent variable 3 (categorical value) = year
 Independent variable 4 (categorical value) = sex
 Independent variable 5 (categorical value) = generation 
 """
-##Renamed variales to avoid white space errors
+##Renamed columns to avoid white space errors
 suicide_rates = suicide_rates.rename(columns={ 'suicides/100k pop' : 'suicide_per_pop'})
 suicide_rates = suicide_rates.rename(columns={ ' gdp_for_year ($) ' : 'gdp_per_year'})
 
@@ -91,7 +91,7 @@ sex_counts = workingdf['sex'].value_counts().reset_index()
 gen_counts = workingdf['generation'].value_counts().reset_index()
 ##Note: all categories have different values, so ultimately the column is UNBALANCED
 
-## Step 8 - Perform 3 one-way ANOVA tests 
+## Step 8 - Perform one-way ANOVA tests 
 
 ## First test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the documented age groups
 model = ols('suicide_per_pop ~ C(age)', data=suicide_rates).fit()
