@@ -21,7 +21,6 @@ import pingouin as pg
 ## Note: This dataframe This datasets is presenting suicide rates from 1985 to 2016 for multiple countries in the world. 
 suicide_rates = pd.read_csv('/Users/victoria_rodriguez/Downloads/suicide.csv')
 
-
 ## Step 3 - Generate a list of columns within the dataframe to identify variables for ANOVA tests 
 list(suicide_rates)
 
@@ -65,7 +64,6 @@ suicides_vs_gdp = sns.barplot(x=' gdp_for_year ($) ', y= 'suicides/100k pop', da
 suicides_vs_year = sns.barplot(x='year', y= 'suicides/100k pop', data=suicide_rates, palette="Set3") 
 
 
-
 ## Step 6 - Create a working dataframe where only columns of interest are visible 
 workingdf = suicide_rates[['suicides/100k pop', 'age',  ' gdp_for_year ($) ',  'year']]
 
@@ -79,8 +77,6 @@ gdp_counts = workingdf[' gdp_for_year ($) ' ].value_counts().reset_index()
 
 year_counts = workingdf['year'].value_counts().reset_index()
 ##Note: all categories have different values, so ultimately the column is UNBALANCED
-
-
 
 ## Step 8 - Perform 3 one-way ANOVA tests 
 
