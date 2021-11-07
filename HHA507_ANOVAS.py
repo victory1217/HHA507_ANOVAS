@@ -92,7 +92,7 @@ gen_counts = workingdf['generation'].value_counts().reset_index()
 
 ## Step 8 - Perform 3 one-way ANOVA tests 
 
-## First test is trying to figure out if there is a difference between number of suicides and the documented age groups
+## First test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the documented age groups
 model = ols('suicide_per_pop ~ C(age)', data=suicide_rates).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
@@ -102,7 +102,7 @@ C(age)    1.405886e+06      5.0  909.788944     0.0
 Residual  8.596127e+06  27814.0         NaN     NaN
 """                                  
 
-## Second test is trying to figure out if there is a difference between number of suicides and gdp earned per year
+## Second test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and gdp earned per year
 model = ols('suicide_per_pop ~ C(gdp_per_year)', data=suicide_rates).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
@@ -112,7 +112,7 @@ C(gdp_per_year)  2.645360e+06   2320.0  3.952207     0.0
 Residual         7.356653e+06  25499.0       NaN     NaN
 """
 
-## Third test is trying to figure out if there is a difference between number of suicides and the year
+## Third test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the year of data collection 
 model = ols('suicide_per_pop ~ C(year)', data=suicide_rates).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
@@ -122,7 +122,7 @@ C(year)   5.415138e+04     31.0  4.879501  1.044607e-17
 Residual  9.947861e+06  27788.0       NaN           NaN
 """
 
-## Fourth test is trying to figure out if there is a difference between number of suicides and the gender of an individual 
+## Fourth test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the gender of an individual 
 model = ols('suicide_per_pop ~ C(sex)', data=suicide_rates).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
@@ -132,7 +132,7 @@ C(sex)    1.533003e+06      1.0  5035.427899     0.0
 Residual  8.469009e+06  27818.0          NaN     NaN
 """
 
-## Fifth test is trying to figure out if there is a difference between number of suicides and the documented generation category
+## Fifth test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the documented generation category
 model = ols('suicide_per_pop ~ C(generation)', data=suicide_rates).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
@@ -153,3 +153,22 @@ Residual       8.870398e+06  27814.0         NaN     NaN
 ## According to the p-value for the fourth ANOVA test, there is a significant difference between the number of suicides and an individual's gender.
 
 ## According to the p-value for the fifth ANOVA test, there is a significant difference between the number of suicides and the generation an individual is classified under.
+
+
+## EXTRA: 2-way ANOVA test practice 
+model = ols('suicide_per_pop ~ C(age) + C(sex) + C(age):C(sex)', data=suicide_rates).fit()
+anova_table = sm.stats.anova_lm(model, typ=3)
+anova_table
+"""
+     sum_sq       df           F         PR(>F)
+Intercept      4.347637e+04      1.0  184.406190   7.195354e-42
+C(age)         1.153800e+05      5.0   97.877480  1.275860e-102
+C(sex)         9.904366e+04      1.0  420.096323   1.126998e-92
+C(age):C(sex)  5.069939e+05      5.0  430.085645   0.000000e+00
+Residual       6.556130e+06  27808.0         NaN            NaN
+"""
+
+## Conclusion for 2-way ANOVA test 
+
+## As shown previously, there are significant differences between number of suicides for age and sex.
+## According to the interaction effect, there seems to be a significant difference between the associated age groups and gender. 
