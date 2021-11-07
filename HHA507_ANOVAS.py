@@ -18,7 +18,7 @@ from scipy.stats import kurtosis, skew, bartlett
 import pingouin as pg
 
 ## Step 2 - Import dataframe to be analyzed 
-## Note: This dataframe This datasets is presenting suicide rates from 1985 to 2016 for multiple countries in the world. 
+## Note: This dataframe is presenting suicide rates from 1985 to 2016 for multiple countries in the world. 
 suicide_rates = pd.read_csv('/Users/victoria_rodriguez/Downloads/suicide.csv')
 
 ## Step 3 - Generate a list of columns within the dataframe to identify variables for ANOVA tests 
@@ -38,7 +38,7 @@ list(suicide_rates)
  'generation' - (6 levels: Boomers, GI Generation, Generation X, Generation Z, Millenials, Silent)
 """
 
-## Step 4 - Select values of interest for 1-way ANOVA tests 
+## Step 4 - Select variables of interest for 1-way ANOVA tests 
 
 """
 Dependent variable (continuous value) = suicides/100k pop
@@ -53,7 +53,7 @@ suicide_rates = suicide_rates.rename(columns={ 'suicides/100k pop' : 'suicide_pe
 suicide_rates = suicide_rates.rename(columns={ ' gdp_for_year ($) ' : 'gdp_per_year'})
 
 
-## Step 5 - Create visuals to see data distribution and differences between data groups 
+## Step 5 - Create visuals to see data distribution and differences between groups 
 
 ##Boxplots to see differences and outliers 
 suicide_age_boxplot = sns.boxplot(x='age', y= 'suicide_per_pop', data=suicide_rates, palette="Set3")
@@ -75,6 +75,7 @@ workingdf = suicide_rates[['suicide_per_pop', 'age','gdp_per_year','year', 'sex'
 
 
 ## Step 7 - Get value counts to determine if the values are unbalanced or balanced 
+
 age_counts = workingdf['age'].value_counts().reset_index()
 ##Note: all categories for age are balanced except for the 5-14 age group, so ultimately the column is UNBALANCED
 
