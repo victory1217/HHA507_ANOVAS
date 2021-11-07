@@ -59,15 +59,15 @@ suicide_rates = suicide_rates.rename(columns={ ' gdp_for_year ($) ' : 'gdp_per_y
 suicide_age_boxplot = sns.boxplot(x='age', y= 'suicide_per_pop', data=suicide_rates, palette="Set3")
 suicide_gdp_boxplot = sns.boxplot(x='gdp_per_year', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
 suicide_year_boxplot = sns.boxplot(x='year', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
-suicide_year_boxplot = sns.boxplot(x='sex', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
-suicide_year_boxplot = sns.boxplot(x='generation', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
+suicide_sex_boxplot = sns.boxplot(x='sex', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
+suicide_gen_boxplot = sns.boxplot(x='generation', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
 
 ##Barplots to see distribution and value counts 
 suicides_vs_age = sns.barplot(x='age', y= 'suicide_per_pop, data=suicide_rates, palette="Set3") 
 suicides_vs_gdp = sns.barplot(x='gdp_per_year', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
 suicides_vs_year = sns.barplot(x='year', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
-suicides_vs_year = sns.barplot(x='sex', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
-suicides_vs_year = sns.barplot(x='generation', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
+suicides_vs_sex = sns.barplot(x='sex', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
+suicides_vs_gen = sns.barplot(x='generation', y= 'suicide_per_pop', data=suicide_rates, palette="Set3") 
 
 
 ## Step 6 - Create a working dataframe where only columns of interest are visible 
