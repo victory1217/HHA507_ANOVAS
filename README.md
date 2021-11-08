@@ -1,6 +1,6 @@
 # HHA507_ANOVAS
 This is the ANOVAs practice assignment for the HHA 507- Statistics course.
-In this assignment, 5 one-way ANOVA tests are performed and 1 two-way ANOVA test is performed. 
+In this assignment, 4 one-way ANOVA tests are performed and 1 two-way ANOVA test is performed. 
 
 This dataset is displaying suicide rates for the years 1985-2016 across numerous countries all over the world. 
 The dataset holds 12 columns that include countries, year of data collection, sex (male and female), age (that is composed of 6 categories), 
