@@ -11,11 +11,12 @@ import pandas as pd
 import seaborn as sns
 import scipy.stats as stats
 import numpy as np 
-import statsmodels.formula.api as smf
+import statsmodels.api as sm
 from statsmodels.formula.api import ols
 import matplotlib.pyplot as plt
 from scipy.stats import kurtosis, skew, bartlett
-import pingouin as pg
+!pip install pingouin
+import statsmodels.stats.multicomp as mc
 
 ## Step 2 - Import dataframe to be analyzed 
 ## Note: This dataframe is presenting suicide rates from 1985 to 2016 for multiple countries in the world. 
@@ -87,42 +88,42 @@ gen_counts = workingdf['generation'].value_counts().reset_index()
 
 ## First test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the documented age groups
 model = ols('suicide_per_pop ~ C(age)', data=suicide_rates).fit()
-anova_table = sm.stats.anova_lm(model, typ=2)
+anova_table = sm.stats.anova_lm(model, typ=1)
 anova_table
 """
-                sum_sq       df           F  PR(>F)
-C(age)    1.405886e+06      5.0  909.788944     0.0
-Residual  8.596127e+06  27814.0         NaN     NaN
+              df          sum_sq        mean_sq           F  PR(>F)
+C(age)        5.0  1.405886e+06  281177.149096  909.788944     0.0
+Residual  27814.0  8.596127e+06     309.057558         NaN     NaN
 """                                  
 
 ## Second test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and gdp earned per year
 model = ols('suicide_per_pop ~ C(gdp_per_year)', data=suicide_rates).fit()
-anova_table = sm.stats.anova_lm(model, typ=2)
-anova_table
+anova_table = sm.stats.anova_lm(model, typ=1)
+anova_table 
 """
-sum_sq       df         F  PR(>F)
-C(gdp_per_year)  2.645360e+06   2320.0  3.952207     0.0
-Residual         7.356653e+06  25499.0       NaN     NaN
+                   df          sum_sq      mean_sq         F    PR(>F)
+C(gdp_per_year)   2320.0  2.645360e+06  1140.241283  3.952207     0.0
+Residual         25499.0  7.356653e+06   288.507505       NaN     NaN
 """
 
 ## Third test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the gender of an individual 
 model = ols('suicide_per_pop ~ C(sex)', data=suicide_rates).fit()
-anova_table = sm.stats.anova_lm(model, typ=2)
+anova_table = sm.stats.anova_lm(model, typ=1)
 anova_table
 """
-                sum_sq       df            F  PR(>F)
-C(sex)    1.533003e+06      1.0  5035.427899     0.0
-Residual  8.469009e+06  27818.0          NaN     NaN
+                df        sum_sq       mean_sq          F    PR(>F)
+C(sex)        1.0  1.533003e+06  1.533003e+06  5035.427899     0.0
+Residual  27818.0  8.469009e+06  3.044435e+02          NaN     NaN
 """
 
 ## Fourth test is trying to figure out if there is a difference between the total number of suicides per 100,000 people and the documented generation category
 model = ols('suicide_per_pop ~ C(generation)', data=suicide_rates).fit()
-anova_table = sm.stats.anova_lm(model, typ=2)
+anova_table = sm.stats.anova_lm(model, typ=1)
 anova_table
 """
-       sum_sq       df           F  PR(>F)
-C(generation)  1.131614e+06      5.0  709.657446     0.0
-Residual       8.870398e+06  27814.0         NaN     NaN
+                    df       sum_sq        mean_sq           F    PR(>F)
+C(generation)      5.0  1.131614e+06  226322.866843  709.657446     0.0
+Residual       27814.0  8.870398e+06     318.918470         NaN     NaN
 """
 
 ## Conclusions for each 1-way ANOVA test
@@ -136,17 +137,33 @@ Residual       8.870398e+06  27814.0         NaN     NaN
 ## According to the p-value for the fourth ANOVA test, there is a significant difference between the number of suicides and the generation an individual is classified under.
 
 
+## Step 9 - Perform post-comp tests
+comp1 = mc.MultiComparison(suicide_rates['suicide_per_pop'], suicide_rates['age'])
+post_hoc_res = comp1.tukeyhsd() 
+tukeyway1 = post_hoc_res.summary()
+
+comp2 = mc.MultiComparison(suicide_rates['suicide_per_pop'], suicide_rates['gdp_per_year'])
+post_hoc_res2 = comp2.tukeyhsd() 
+tukeyway2 = post_hoc_res2.summary()
+
+comp3 = mc.MultiComparison(suicide_rates['suicide_per_pop'], suicide_rates['sex'])
+post_hoc_res3 = comp3.tukeyhsd() 
+tukeyway3 = post_hoc_res3.summary()
+
+comp4 = mc.MultiComparison(suicide_rates['suicide_per_pop'], suicide_rates['generation'])
+post_hoc_res4 = comp4.tukeyhsd() 
+tukeyway4 = post_hoc_res4.summary()
+
 ## EXTRA: 2-way ANOVA test practice 
 model = ols('suicide_per_pop ~ C(age) + C(sex) + C(age):C(sex)', data=suicide_rates).fit()
-anova_table = sm.stats.anova_lm(model, typ=3)
+anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
 """
-     sum_sq       df           F         PR(>F)
-Intercept      4.347637e+04      1.0  184.406190   7.195354e-42
-C(age)         1.153800e+05      5.0   97.877480  1.275860e-102
-C(sex)         9.904366e+04      1.0  420.096323   1.126998e-92
-C(age):C(sex)  5.069939e+05      5.0  430.085645   0.000000e+00
-Residual       6.556130e+06  27808.0         NaN            NaN
+                    sum_sq       df          F      PR(>F)
+C(age)         1.405886e+06      5.0  1192.620420     0.0
+C(sex)         1.533003e+06      1.0  6502.274641     0.0
+C(age):C(sex)  5.069939e+05      5.0   430.085645     0.0
+Residual       6.556130e+06  27808.0          NaN     NaN
 """
 
 ## Conclusion for 2-way ANOVA test 
